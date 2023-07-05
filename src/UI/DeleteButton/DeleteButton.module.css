@@ -1,0 +1,8 @@
+.delBtn {
+    padding: 5px 15px;
+    color: white;
+    font-size: 14px;
+    background: red;
+    border: 1px solid white;
+    cursor: pointer;
+}
