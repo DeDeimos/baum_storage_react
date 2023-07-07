@@ -3,7 +3,7 @@ import classes from './DeleteButton.module.css'
 
 const DeleteButton = (props) =>{
     return(
-        <button {...props} classname={classes.delBtn}>
+        <button {...props} className={classes.delBtn}>
             Удалить
         </button>
     );

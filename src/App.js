@@ -1,15 +1,13 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import './App.css';
 import { PostFilter, PostForm, PostList } from './components';
 
 
 function App() {
 
-  const [posts, setPosts] = useState([
-    { id: 1, title: "Title 1", body: "Body 1" },
-    { id: 2, title: "Title 2", body: "Body 2" },
-    { id: 3, title: "Title 3", body: "Body 3" },
-  ])
+  const [posts, setPosts] = useState([]);
+
+
 
   const [filter, setFilter] = useState({
     sort: "",
@@ -25,20 +23,57 @@ function App() {
 
   const sortedAndSearchedPosts = useMemo(() => {
     return sortedPosts.filter(post => post.title.toLowerCase().includes(filter.query))
-  }, [filter.query, sortedPosts])
+  }, [filter.query, sortedPosts]);
+
+  let flag = true;
+
+  useEffect(() => {
+    fetch("http://localhost:3010/api/posts", {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }).then((res) => {
+      if (res.ok) {
+        return res.json();
+      }
+      return res.text().then((error) => {
+        throw new Error(error);
+      });
+    }).then(data => {
+      setPosts(data);
+      console.log(posts);
+      console.log("Посты отгружены")
+    })
+  }, [flag]);
 
   const createPost = (newPost) => {
     setPosts([...posts, newPost]);
+    //костылечек
+    flag = !flag;
   }
 
   const removePost = (post) => {
-    setPosts(posts.filter(p => p.id !== post.id))
+    // e.preventDefault();
+    console.log(post);
+    fetch("http://localhost:3010/api/post", {
+      method: 'DELETE',
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        id: post.id
+      })
+    }).then(response => {
+      console.log(response);
+      return response.json();
+    }).then(setPosts(posts.filter(p => p.id !== post.id)));
+    
   }
 
   return (
     <div className="App">
       <PostForm create={createPost} />
-      <PostFilter filter={filter} setFilter={setFilter}/>
+      <PostFilter filter={filter} setFilter={setFilter} />
       <PostList remove={removePost} posts={sortedAndSearchedPosts} title="Список постов" />
     </div>
   );
