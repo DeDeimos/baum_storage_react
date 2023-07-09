@@ -40,6 +40,7 @@ const Auth = () => {
                     console.log(data);
                     localStorage.setItem('token', data.token);
                     localStorage.setItem('id', data.id);
+                    localStorage.setItem('login', data.login);
                     localStorage.setItem('nickname', data.nickname);
                     setIsAuth(true);
                     localStorage.setItem('auth', 'true');

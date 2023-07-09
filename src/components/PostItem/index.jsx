@@ -16,7 +16,7 @@ function PostItem({ post, number, remove }) {
         const minutes = String(date.getMinutes()).padStart(2, '0');
         const seconds = String(date.getSeconds()).padStart(2, '0');
 
-        return `${hours}:${minutes}:${seconds} ${day}-${month}-${year}`;
+        return `Создан: ${day}.${month}.${year} в ${hours}:${minutes}`;
         // return `${year}-${month}-${day}T${hours}:${minutes}:${seconds}.000Z`;
     };
 
@@ -25,9 +25,9 @@ function PostItem({ post, number, remove }) {
             <div className={classes.post__top}>
                 <div className={classes.post__content}>
                     <strong>{number}. {post.title}</strong>
-                    <div>
+                    <p>
                         {post.body}
-                    </div>
+                    </p>
                 </div>
                 <div className={classes.post__btns}>
                     {

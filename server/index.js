@@ -12,8 +12,6 @@ app.use(bodyParser.json());
 app.use(cookieParser());
 app.use(cors());
 
-
-
 app.get('/api/posts', (req, res) => {
     BaumController.getPosts().then(data => {
         if(data.error){

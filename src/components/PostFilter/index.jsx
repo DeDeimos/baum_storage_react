@@ -3,7 +3,7 @@ import { PostSelect } from "../../UI";
 
 const PostFilter = ({ filter, setFilter }) => {
   return (
-    <div>
+    <div style={{padding: "25px"}}>
       <InputSearch
         type="text"
         value={filter.query}

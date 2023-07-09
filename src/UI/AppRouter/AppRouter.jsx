@@ -1,7 +1,7 @@
 import { Route, Routes } from 'react-router-dom';
 import { useContext } from 'react';
 import { AuthContext } from '../../context';
-import { Auth, Login, Main, Profile } from '../../pages';
+import { Auth, Login, Main, NotFound, Profile } from '../../pages';
 
 const AppRouter = () => {
     const { isAuth, setIsAuth } = useContext(AuthContext);
@@ -19,6 +19,10 @@ const AppRouter = () => {
                     element={<Main />}
                     path="/"
                 />
+                <Route
+                    element={<NotFound />}
+                    path='*'
+                />
 
             </Routes>
             :
@@ -30,6 +34,10 @@ const AppRouter = () => {
                 <Route
                     element={<Auth />}
                     path="/auth"
+                />
+                <Route
+                    element={<NotFound />}
+                    path='*'
                 />
             </Routes>
 
