@@ -1,34 +1,25 @@
 import { useState } from "react";
-import { InputPost } from "../../UI";
+import { AddButton, InputPost } from "../../UI";
 
 const PostForm = ({create}) => {
     
-    const formatDateTime = (dateTime) => {
-        const date = new Date(dateTime);
 
-        const year = date.getFullYear();
-        const month = String(date.getMonth() + 1).padStart(2, '0');
-        const day = String(date.getDate()).padStart(2, '0');
-        const hours = String(date.getHours()).padStart(2, '0');
-        const minutes = String(date.getMinutes()).padStart(2, '0');
-        const seconds = String(date.getSeconds()).padStart(2, '0');
-
-        return `${hours}:${minutes}:${seconds} ${day}-${month}-${year}`;
-        // return `${year}-${month}-${day}T${hours}:${minutes}:${seconds}.000Z`;
-    };
-
+    const creator = localStorage.getItem("nickname");
+    const id = localStorage.getItem("id");
 
     const [post, setPost] = useState({
         title: "",
         body: "",
-        publication_date: new Date(),
-        creator: 1,
+        publication_date: "",
+        creator: id,
     });
 
     const [errMessage, setErrMessage] = useState('');
 
     const addNewPost = (e) => {
         e.preventDefault();
+        setPost({...post, publication_date: new Date()});
+        console.log(post);
         let error = false;
         if(post.title === ""){
             error = true;
@@ -46,7 +37,7 @@ const PostForm = ({create}) => {
             headers: {
                 "Content-Type": "application/json",
             },
-            body: JSON.stringify(post)
+            body: JSON.stringify({...post, publication_date: new Date()})
         }).then((res) => {
             if(res.ok){
                 return res.json();
@@ -55,8 +46,9 @@ const PostForm = ({create}) => {
                 throw new Error(error);
             });
         }).then(data => {
-            create(data);
-            setPost({ title: "", body: "" });
+            console.log(data);
+            create({title: data.title, body: data.body, publication_date: data.publication_date, creator: creator });
+            setPost({...post, title: "", body: ""});
         })
         
     }
@@ -76,7 +68,7 @@ const PostForm = ({create}) => {
                 value={post.body}
                 onChange={e => setPost({ ...post, body: e.target.value })}
             />
-            <button onClick={addNewPost}>Создать пост</button>
+            <div style={{alignItems: "end", display: "flex", justifyContent: "flex-end"}}><AddButton onClick={addNewPost}/></div>
         </form>
     );
 }

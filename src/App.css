@@ -6,6 +6,7 @@
 
 #root{
   display: flex;
+  flex-direction: column;
   justify-content: center;
 }
 
@@ -14,23 +15,5 @@
 
 }
 
-.post{
-  padding: 15px;
-  border: 2px solid blue;
-  margin-top: 15px;
-  align-items: center;
-}
 
-.post__top {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.post__bottom{
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-top: 10px;
-}
 

@@ -10,7 +10,7 @@ class BaumRepository{
 
     async getPosts(){
         try{
-            let data = await this.db.any('SELECT posts.id, posts.title, posts.body, posts.publication_date, creators.nickname as creator FROM posts join creators on posts.creator = creators.id  ORDER BY posts.id');
+            let data = await this.db.any('SELECT posts.id, posts.title, posts.body, posts.publication_date, creators.nickname as creator FROM posts join creators on posts.creator = creators.id  ORDER BY posts.id DESC');
             return data;
         }catch(error){
             return {error: error.message};
@@ -41,7 +41,26 @@ class BaumRepository{
 
     async getCreators(){
         try{
-            let data = await this.db.any('SELECT * FROM creators ORDER BY id');
+            let data = await this.db.any('SELECT * FROM creators ORDER BY id ');
+            return data;
+        }catch(error){
+            return {error: error.message};
+        }
+    }
+
+    async checkCreator(login){
+        try{
+            let data = await this.db.oneOrNone('SELECT * FROM creators WHERE login = $1', [login]);
+            return data;
+        }catch(error){
+            return {error: error.message};
+        }
+    }
+
+    async createCreator(creator){
+        const {login, password, nickname} = creator;
+        try{
+            let data = await this.db.one('INSERT INTO creators (login, password, nickname) VALUES ($1, $2, $3) RETURNING *', [login, password, nickname]);
             return data;
         }catch(error){
             return {error: error.message};

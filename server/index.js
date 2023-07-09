@@ -55,6 +55,41 @@ app.get('/api/creators', (req, res) => {
     });
 });
 
+app.post('/api/login', (req, res) => {
+    BaumController.checkCreator(req.body.login).then(data => {
+        if(!data){
+            res.status(500).json(data);
+        }else{
+            if(data.password == req.body.password){
+                res.cookie('baum', data.password, {maxAge: 360000});
+                res.json(data);
+            }else{
+                res.status(403).json({error: 'Wrong password'});
+            }
+        }
+    })
+})
+
+app.post('/api/signup', async (req, res) => {
+        //проверка на существование пользователя
+        console.log(req.body);
+        let data = await BaumController.checkCreator(req.body.login)
+        console.log(data);
+    
+        if (data) {
+            return res.status(403).json({ error: 'User already exists' });
+        }
+    
+        // создание пользователя
+        data = await BaumController.createCreator(req.body)
+        if (data.error) {
+            return res.status(500).json(data);
+        }
+    
+        res.cookie('programodo', data.password, { maxAge: 360000 });
+        res.json(data);
+})
+
 app.listen(port, () => {
     console.log(`Server started on port ${port}`);
 })

@@ -1,6 +1,8 @@
+import classes from "./InputSearch.module.css"
+
 const InputSearch = (props) => {
     return(
-        <input {...props} >
+        <input {...props} className={classes.InpSrch} >
         
         </input>
     )

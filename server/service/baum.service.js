@@ -19,6 +19,14 @@ class BaumService{
     async getCreators(){
         return await BaumRepository.getCreators();
     }
+
+    async checkCreator(login){
+        return await BaumRepository.checkCreator(login);
+    }
+
+    async createCreator(creator){
+        return await BaumRepository.createCreator(creator);
+    }
 }
 
 module.exports = new BaumService();
